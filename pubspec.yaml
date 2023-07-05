@@ -1,11 +1,11 @@
 name: stories_page_view
-description: A new Flutter package project.
-version: 0.0.1-alpha
-homepage:
+description: A Flutter package for creating a instagram like story. 
+version: 0.0.2-alpha
+homepage: https://github.com/Blocship/stories_page_view
 
 environment:
   sdk: '>=3.0.1 <4.0.0'
-  flutter: ">=1.17.0"
+  flutter: ">=3.10.1"
 
 dependencies:
   flutter:

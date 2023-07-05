@@ -1,7 +1,6 @@
 library stories_page_view;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'src/controller/story_controller.dart'
+    show StoryController, PlayBackState;
+export 'src/progress_bar.dart' show StoryProgressBars;
+export 'src/stories_view.dart' show StoryPageView;
