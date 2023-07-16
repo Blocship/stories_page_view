@@ -33,6 +33,7 @@ class _VideoSnapState extends State<VideoSnap> {
       widget.controller.play();
     });
     _videoController.addListener(() {});
+    widget.controller.play();
   }
 
   @override

@@ -140,6 +140,7 @@ class _StoryPageViewState extends State<StoryPageView> {
           itemCount: widget.pageCount,
           itemBuilder: (context, pageIndex) {
             return StoryPageItem(
+              key: ValueKey('storyPage-$pageIndex'),
               controller: storyControllers[pageIndex],
               snapCount: widget.snapCountBuilder(pageIndex),
               durationBuilder: (snapIndex) {
