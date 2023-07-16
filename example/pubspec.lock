@@ -171,7 +171,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.0.2-alpha"
+    version: "0.0.2-alpha.1"
   stream_channel:
     dependency: transitive
     description:
