@@ -1,6 +1,10 @@
 import 'package:flutter/widgets.dart';
 
-class StoryPageController extends PageController {}
+class StoryPageController extends PageController {
+  StoryPageController({
+    super.initialPage,
+  });
+}
 
 class StoryPageControllerProvider extends InheritedWidget {
   final StoryPageController controller;
