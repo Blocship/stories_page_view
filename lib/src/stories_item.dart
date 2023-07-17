@@ -171,30 +171,30 @@ class _StoryPageItemState extends State<StoryPageItem>
           }
         },
         onTapDown: (details) {
-          print('onTapDown: $details');
+          // print('onTapDown: $details');
           _animationController.stop();
         },
         onTapUp: (details) {
-          print('onTapUp: $details');
+          // print('onTapUp: $details');
           _animationController.forward();
         },
         onTapCancel: () {
-          print('onTapCancel');
+          // print('onTapCancel');
         },
         onVerticalDragDown: (details) {
-          print('onVerticalDragDown: $details');
+          // print('onVerticalDragDown: $details');
         },
         onVerticalDragEnd: (details) {
-          print('onVerticalDragEnd: $details');
+          // print('onVerticalDragEnd: $details');
         },
         onVerticalDragStart: (details) {
-          print('onVerticalDragStart: $details');
+          // print('onVerticalDragStart: $details');
         },
         onVerticalDragCancel: () {
-          print('onVerticalDragCancel');
+          // print('onVerticalDragCancel');
         },
         onVerticalDragUpdate: (details) {
-          print('onVerticalDragUpdate: $details');
+          // print('onVerticalDragUpdate: $details');
         },
         child: StreamBuilder(
           stream: widget.controller.indexStream,
