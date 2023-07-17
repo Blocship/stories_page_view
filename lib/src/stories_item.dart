@@ -98,7 +98,7 @@ class _StoryPageItemState extends State<StoryPageItem>
 
   void onTapPrevious() {
     _animationController.stop();
-    widget.controller.jumpToPrevious();
+    movePrevious();
     _animationController
       ..reset()
       ..duration = widget.durationBuilder(
@@ -106,6 +106,17 @@ class _StoryPageItemState extends State<StoryPageItem>
       );
     // ..forward();
   }
+
+  void onTapHold() {}
+
+  void onTapHoldRelease() {}
+
+  // check, if the tap is tap or hold
+  // if tap, then move to next
+  // if hold, then pause
+  // maybe use raw gesture detector
+  // and gesture arena
+  // or debouncer
 
   void moveNext() {
     if (widget.snapCount - 1 == widget.controller.currentIndex) {
@@ -115,6 +126,17 @@ class _StoryPageItemState extends State<StoryPageItem>
       );
     } else {
       widget.controller.jumpToNext();
+    }
+  }
+
+  void movePrevious() {
+    if (widget.controller.currentIndex == 0) {
+      storyPageController?.previousPage(
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    } else {
+      widget.controller.jumpToPrevious();
     }
   }
 
@@ -131,18 +153,48 @@ class _StoryPageItemState extends State<StoryPageItem>
       // So, all the gestures beneath the child will work
       // like you can pause and play the video in itemBuilder
       child: GestureDetector(
-        // todo: hold to pause
-
         onTap: () {
           // 20% of the screen width from the left
           // like instagram
+          final TextDirection currentDirection =
+              Directionality.maybeOf(context) ?? TextDirection.ltr;
+
           final screenWidth20 = MediaQuery.of(context).size.width / 5;
-          final isTappedOnLeft = tapOffset.dx < screenWidth20;
-          if (isTappedOnLeft) {
+          final isTappedOnStart = (currentDirection == TextDirection.ltr)
+              ? tapOffset.dx < screenWidth20
+              : tapOffset.dx > (screenWidth20 * 4);
+
+          if (isTappedOnStart) {
             onTapPrevious();
           } else {
             onTapNext();
           }
+        },
+        onTapDown: (details) {
+          // print('onTapDown: $details');
+          _animationController.stop();
+        },
+        onTapUp: (details) {
+          // print('onTapUp: $details');
+          _animationController.forward();
+        },
+        onTapCancel: () {
+          // print('onTapCancel');
+        },
+        onVerticalDragDown: (details) {
+          // print('onVerticalDragDown: $details');
+        },
+        onVerticalDragEnd: (details) {
+          // print('onVerticalDragEnd: $details');
+        },
+        onVerticalDragStart: (details) {
+          // print('onVerticalDragStart: $details');
+        },
+        onVerticalDragCancel: () {
+          // print('onVerticalDragCancel');
+        },
+        onVerticalDragUpdate: (details) {
+          // print('onVerticalDragUpdate: $details');
         },
         child: StreamBuilder(
           stream: widget.controller.indexStream,
