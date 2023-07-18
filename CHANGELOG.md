@@ -1,3 +1,8 @@
+## 0.0.2-alpha.1
+
+* `StoryPageView.initialPage` is is added
+* Compatibility with rtl languages is improved
+
 ## 0.0.2-alpha
 
 * First usable version
