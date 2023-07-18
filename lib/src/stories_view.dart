@@ -25,6 +25,11 @@ typedef SnapCountBuilder = int Function(int pageIndex);
 class StoryPageView extends StatefulWidget {
   /// The total number of Story items (stories)
   final int pageCount;
+
+  /// The initial page index
+  final int initialPage;
+
+  /// The builder that builds each story item (story)
   final StoryItemBuilder itemBuilder;
 
   /// The initial snap index for each story item (story)
@@ -45,6 +50,7 @@ class StoryPageView extends StatefulWidget {
 
   const StoryPageView({
     super.key,
+    this.initialPage = 0,
     required this.pageCount,
     required this.itemBuilder,
     required this.snapInitialIndexBuilder,
@@ -59,13 +65,16 @@ class StoryPageView extends StatefulWidget {
 
 class _StoryPageViewState extends State<StoryPageView> {
   final ObservableObject<bool> _outOfRange = false.asObservable();
-  final StoryPageController controller = StoryPageController();
+  late final StoryPageController controller;
 
   final List<StoryControllerImpl> storyControllers = [];
 
   @override
   void initState() {
     super.initState();
+    controller = StoryPageController(
+      initialPage: widget.initialPage,
+    );
     _outOfRange.attachListener(_onOutOfRangeChanged);
     storyControllers.addAll(
       List.generate(

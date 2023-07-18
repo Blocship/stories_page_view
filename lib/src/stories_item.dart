@@ -136,9 +136,15 @@ class _StoryPageItemState extends State<StoryPageItem>
         onTap: () {
           // 20% of the screen width from the left
           // like instagram
+          final TextDirection currentDirection =
+              Directionality.maybeOf(context) ?? TextDirection.ltr;
+
           final screenWidth20 = MediaQuery.of(context).size.width / 5;
-          final isTappedOnLeft = tapOffset.dx < screenWidth20;
-          if (isTappedOnLeft) {
+          final isTappedOnStart = (currentDirection == TextDirection.ltr)
+              ? tapOffset.dx < screenWidth20
+              : tapOffset.dx > (screenWidth20 * 4);
+
+          if (isTappedOnStart) {
             onTapPrevious();
           } else {
             onTapNext();
