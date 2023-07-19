@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+/// Page controller for StoryPageView
 class StoryPageController extends PageController {
   StoryPageController({
     super.initialPage,

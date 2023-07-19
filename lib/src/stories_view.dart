@@ -26,8 +26,8 @@ class StoryPageView extends StatefulWidget {
   /// The total number of Story items (stories)
   final int pageCount;
 
-  /// The initial page index
-  final int initialPage;
+  /// The controller that controls the page view
+  final StoryPageController? controller;
 
   /// The builder that builds each story item (story)
   final StoryItemBuilder itemBuilder;
@@ -50,7 +50,7 @@ class StoryPageView extends StatefulWidget {
 
   const StoryPageView({
     super.key,
-    this.initialPage = 0,
+    this.controller,
     required this.pageCount,
     required this.itemBuilder,
     required this.snapInitialIndexBuilder,
@@ -72,9 +72,7 @@ class _StoryPageViewState extends State<StoryPageView> {
   @override
   void initState() {
     super.initState();
-    controller = StoryPageController(
-      initialPage: widget.initialPage,
-    );
+    controller = widget.controller ?? StoryPageController(initialPage: 0);
     _outOfRange.attachListener(_onOutOfRangeChanged);
     storyControllers.addAll(
       List.generate(

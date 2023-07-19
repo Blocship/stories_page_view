@@ -1,3 +1,8 @@
+## 0.0.2-alpha.2
+
+* `StoryPageController` exposed
+* `initialPage` is now set through `StoryPageController`
+
 ## 0.0.2-alpha.1
 
 * `StoryPageView.initialPage` is is added
