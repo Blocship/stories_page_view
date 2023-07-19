@@ -1,6 +1,6 @@
 name: stories_page_view
 description: A Flutter package for creating a instagram like story. 
-version: 0.0.2-alpha.2
+version: 0.0.2
 homepage: https://github.com/Blocship/stories_page_view
 
 environment:

@@ -1,3 +1,7 @@
+## 0.0.2
+
+* Bug fix: tap to go back throws range error
+
 ## 0.0.2-alpha.2
 
 * `StoryPageController` exposed

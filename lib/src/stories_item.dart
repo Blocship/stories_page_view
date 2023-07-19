@@ -98,7 +98,7 @@ class _StoryPageItemState extends State<StoryPageItem>
 
   void onTapPrevious() {
     _animationController.stop();
-    widget.controller.jumpToPrevious();
+    movePrevious();
     _animationController
       ..reset()
       ..duration = widget.durationBuilder(
@@ -115,6 +115,17 @@ class _StoryPageItemState extends State<StoryPageItem>
       );
     } else {
       widget.controller.jumpToNext();
+    }
+  }
+
+  void movePrevious() {
+    if (widget.controller.currentIndex == 0) {
+      storyPageController?.previousPage(
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    } else {
+      widget.controller.jumpToPrevious();
     }
   }
 
