@@ -55,13 +55,7 @@ class _StoryPageItemState extends State<StoryPageItem>
       ..addListener(_handleAnimation);
     // ..forward();
     _playBackStateSubscription =
-        widget.controller.playBackStateStream.listen((playBackState) {
-      if (playBackState == PlayBackState.playing) {
-        _animationController.forward();
-      } else {
-        _animationController.stop();
-      }
-    });
+        widget.controller.playBackStateStream.listen(onPlayBackStateChanged);
   }
 
   @override
@@ -70,6 +64,21 @@ class _StoryPageItemState extends State<StoryPageItem>
     _animationController.dispose();
     _playBackStateSubscription.cancel();
     super.dispose();
+  }
+
+  void onPlayBackStateChanged(PlayBackState playBackState) {
+    switch (playBackState) {
+      case PlayBackState.notStarted:
+        break;
+      case PlayBackState.playing:
+        _animationController.forward();
+        break;
+      case PlayBackState.paused:
+        _animationController.stop();
+        break;
+      case PlayBackState.completed:
+        _animationController.value = _animationController.upperBound;
+    }
   }
 
   void _handleAnimation() {
@@ -129,48 +138,70 @@ class _StoryPageItemState extends State<StoryPageItem>
     }
   }
 
+  void onTapRelease(TapUpDetails details) {
+    final tapOffset = details.globalPosition;
+    // 20% of the screen width from the left
+    // like instagram
+    final TextDirection currentDirection =
+        Directionality.maybeOf(context) ?? TextDirection.ltr;
+
+    final screenWidth20 = MediaQuery.of(context).size.width / 5;
+    final isTappedOnStart = (currentDirection == TextDirection.ltr)
+        ? tapOffset.dx < screenWidth20
+        : tapOffset.dx > (screenWidth20 * 4);
+
+    if (isTappedOnStart) {
+      onTapPrevious();
+    } else {
+      onTapNext();
+    }
+  }
+
+  void onHoldRelease(TapUpDetails details) {
+    if (widget.controller.playBackState == PlayBackState.paused) {
+      widget.controller.play();
+    }
+  }
+
+  // to figure out if the gesture is for tap or to hold
+  Timer? _debouncer;
+
   @override
   Widget build(BuildContext context) {
-    Offset tapOffset = Offset.zero;
     // https://www.youtube.com/watch?v=zEoASR7DTIw
     // https://medium.com/koahealth/combining-multiple-gesturedetectors-in-flutter-26d899d008b2
-    return Listener(
-      onPointerUp: (event) {
-        tapOffset = event.position;
+    return GestureDetector(
+      onTapCancel: () {
+        if (widget.controller.playBackState.isPaused) {
+          widget.controller.play();
+        }
       },
-      // by default GestureDetector gives precedences to the child
-      // So, all the gestures beneath the child will work
-      // like you can pause and play the video in itemBuilder
-      child: GestureDetector(
-        // todo: hold to pause
-
-        onTap: () {
-          // 20% of the screen width from the left
-          // like instagram
-          final TextDirection currentDirection =
-              Directionality.maybeOf(context) ?? TextDirection.ltr;
-
-          final screenWidth20 = MediaQuery.of(context).size.width / 5;
-          final isTappedOnStart = (currentDirection == TextDirection.ltr)
-              ? tapOffset.dx < screenWidth20
-              : tapOffset.dx > (screenWidth20 * 4);
-
-          if (isTappedOnStart) {
-            onTapPrevious();
-          } else {
-            onTapNext();
-          }
+      onTapDown: (_) {
+        if (widget.controller.playBackState.isPlaying) {
+          widget.controller.pause();
+          _debouncer = Timer(const Duration(milliseconds: 500), () {});
+        }
+      },
+      onTapUp: (_) {
+        if (_debouncer == null) {
+          onTapRelease(_);
+        } else if (_debouncer!.isActive) {
+          onTapRelease(_);
+        } else {
+          onHoldRelease(_);
+        }
+        _debouncer?.cancel();
+        _debouncer = null;
+      },
+      child: StreamBuilder(
+        stream: widget.controller.indexStream,
+        builder: (context, _) {
+          return widget.itemBuilder(
+            context,
+            widget.controller.currentIndex,
+            _animation,
+          );
         },
-        child: StreamBuilder(
-          stream: widget.controller.indexStream,
-          builder: (context, _) {
-            return widget.itemBuilder(
-              context,
-              widget.controller.currentIndex,
-              _animation,
-            );
-          },
-        ),
       ),
     );
   }

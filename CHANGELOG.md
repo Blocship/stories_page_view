@@ -1,3 +1,10 @@
+## 0.0.3
+
+* Feature: Tap and hold to pause
+* `pubspec.yaml` description updated
+* New state `PlayBackState.notStarted` is added
+* `complete()` and `playBackStateStream;` is added to `StoryController`
+
 ## 0.0.2
 
 * Bug fix: tap to go back throws range error
