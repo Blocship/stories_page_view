@@ -1,3 +1,7 @@
+## 0.0.4
+
+* `onPageChange` is added to `StoryPageController`
+
 ## 0.0.3
 
 * Feature: Tap and hold to pause

@@ -137,6 +137,7 @@ class _StoryPageViewState extends State<StoryPageView> {
           physics: const BouncingScrollPhysics(),
           itemCount: widget.pageCount,
           itemBuilder: (context, pageIndex) {
+            controller.onPageChange?.call(pageIndex);
             return StoryPageItem(
               key: ValueKey('storyPage-$pageIndex'),
               controller: storyControllers[pageIndex],

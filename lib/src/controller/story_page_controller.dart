@@ -2,8 +2,10 @@ import 'package:flutter/widgets.dart';
 
 /// Page controller for StoryPageView
 class StoryPageController extends PageController {
+  final void Function(int page)? onPageChange;
   StoryPageController({
     super.initialPage,
+    this.onPageChange,
   });
 }
 
