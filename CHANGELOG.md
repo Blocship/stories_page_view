@@ -1,3 +1,6 @@
+## 0.0.5
+
+* Example link attached
 ## 0.0.4
 
 * `onPageChange` is added to `StoryPageController`
